@@ -2,8 +2,9 @@ import { compare } from "bcrypt";
 import { IUser } from "../models";
 import { UNAUTHORIZED_ERROR } from "../errors/common";
 import { genAccessRefreshToken } from "../utils/GenAccessRefreshToken";
+import { IAuthService } from "../interfaces";
 
-export default class AuthService {
+export default class AuthService implements IAuthService {
   constructor() {}
   async login(
     userInDb: IUser,
