@@ -21,11 +21,12 @@ export const AuthGuard = (
   if (bearer !== "Bearer") {
     throw new UNAUTHORIZED_ERROR();
   }
-  verify(token, process.env.SECRET_KEY as string, (err, decoded) => {
+  verify(token, process.env.ACCESS_TOKEN_SECRET as string, (err, decoded) => {
     if (err) {
       throw new FORBIDDEN_ERROR();
     }
-    req.user = (decoded as JwtPayload).username;
+    req.user = (decoded as JwtPayload).email;
+    console.log(req.user);
     next();
   });
 };

@@ -14,7 +14,9 @@ export default class AuthController implements IAuthController {
       userInDb,
       req.body.password
     );
-    await this.userService.update(userId, { ...userInDb, refreshToken });
+    await this.userService.update(userId, {
+      refreshToken,
+    });
     res.cookie("jwt", refreshToken, {
       httpOnly: true,
       maxAge: 24 * 60 * 60 * 1000,
@@ -29,7 +31,7 @@ export default class AuthController implements IAuthController {
     const { accessToken, refreshToken } = await this.authService.register(
       req.body.email
     );
-    const newUser = await this.userService.create({
+    await this.userService.create({
       ...req.body,
       refreshToken,
     });

@@ -4,7 +4,7 @@ import cookieParser from "cookie-parser";
 import "express-async-errors";
 import { connectDB } from "./src/configs/db";
 import { AppRouter } from "./src/routes/AppRoutes";
-import { AuthGuard, ErrorHandler, ReqLogger } from "./src/middlewares";
+import { ErrorHandler, ReqLogger } from "./src/middlewares";
 
 dotenv.config();
 const app = express();
@@ -15,10 +15,9 @@ app.use(cookieParser());
 const { PORT, CONNECTION_STRING } = process.env;
 //MIDDLEWARES
 //ERROR HANDLER
-// app.use(AuthGuard);
-app.use(ErrorHandler);
 app.use(ReqLogger);
 app.use("/api", AppRouter);
+app.use(ErrorHandler);
 const initializeApp = async () => {
   try {
     await connectDB(CONNECTION_STRING as string);
