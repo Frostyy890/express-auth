@@ -4,7 +4,18 @@ export default interface IUserService {
   getAll(): Promise<IUser[]>;
   getById(id: string): Promise<IUser>;
   getByEmail(email: string): Promise<IUser>;
-  create(userData: IUser): Promise<IUser | null>;
-  update(id: string, userData: IUser): Promise<IUser | null>;
+  create(userData: {
+    email: string;
+    password: string;
+    refreshToken?: string;
+  }): Promise<IUser>;
+  update(
+    id: string,
+    userData: {
+      email: string;
+      password: string;
+      refreshToken?: string;
+    }
+  ): Promise<IUser | null>;
   delete(id: string): Promise<void>;
 }

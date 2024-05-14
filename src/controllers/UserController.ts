@@ -15,7 +15,7 @@ export default class UserController implements IUserController {
     next: NextFunction
   ): Promise<void> {
     const { id } = req.params;
-    const user: IUser = await this.userService.getById(id);
+    const user = await this.userService.getById(id);
     res.status(200).json({ data: user });
   }
   async getByEmail(
@@ -24,21 +24,18 @@ export default class UserController implements IUserController {
     next: NextFunction
   ): Promise<void> {
     const { email } = req.body;
-    const user: IUser = await this.userService.getByEmail(email);
+    const user = await this.userService.getByEmail(email);
     res.status(200).json({ data: user });
   }
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const newUser: IUser | null = await this.userService.create(req.body);
+    const newUser = await this.userService.create(req.body);
     res.status(201).json({ data: newUser, message: "Successfully created" });
   }
 
   async update(req: Request, res: Response, next: NextFunction): Promise<void> {
     const { id } = req.params;
     await this.userService.getById(id);
-    const updatedUser: IUser | null = await this.userService.update(
-      id,
-      req.body
-    );
+    const updatedUser = await this.userService.update(id, req.body);
     res
       .status(200)
       .json({ data: updatedUser, message: "Successfully updated" });

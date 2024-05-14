@@ -24,7 +24,11 @@ export default class UserService implements IUserService {
       });
     return user;
   }
-  async create(userData: IUser): Promise<IUser | null> {
+  async create(userData: {
+    email: string;
+    password: string;
+    refreshToken?: string;
+  }): Promise<IUser> {
     const { email, password } = userData;
     const userInDb = await this.user.findOne({ email }).exec();
     if (userInDb) {
@@ -39,7 +43,10 @@ export default class UserService implements IUserService {
     });
     return newUser;
   }
-  async update(id: string, userData: IUser): Promise<IUser | null> {
+  async update(
+    id: string,
+    userData: { email: string; password: string; refreshToken?: string }
+  ): Promise<IUser | null> {
     const { email, password } = userData;
     const userWithEmail = await this.user.findOne({ email }).exec();
     if (userWithEmail && userWithEmail._id.toString() !== id) {

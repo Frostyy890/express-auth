@@ -1,2 +1,3 @@
 import UserService from "./UserService";
-export { UserService };
+import AuthService from "./AuthService";
+export { UserService, AuthService };

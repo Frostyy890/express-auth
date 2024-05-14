@@ -1,4 +1,5 @@
 import IUserController from "./IUserController";
 import IUserService from "./IUserService";
+import IAuthController from "./IAuthController";
 
-export { IUserController, IUserService };
+export { IUserController, IUserService, IAuthController };
