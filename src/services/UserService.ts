@@ -19,11 +19,11 @@ export default class UserService implements IUserService {
     if (!user) throw new NOT_FOUND_ERROR({ message: "User not found" });
     return user;
   }
-  async getByEmail(email: string): Promise<IUser> {
-    const user = await this.user.findOne({ email }).exec();
+  async getByAttribute(attribute: keyof IUser, value: string): Promise<IUser> {
+    const user = await this.user.findOne({ [attribute]: value }).exec();
     if (!user)
       throw new NOT_FOUND_ERROR({
-        message: `User with email ${email} doesn't exist`,
+        message: `User with ${attribute} ${value} doesn't exist`,
       });
     return user;
   }

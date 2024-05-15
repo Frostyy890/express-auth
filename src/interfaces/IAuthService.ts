@@ -12,4 +12,11 @@ export default interface IAuthService {
     accessToken: string;
     refreshToken: string;
   }>;
+  refresh(
+    refreshToken: string,
+    userInDb: IUser
+  ): Promise<{
+    accessToken: string;
+    refreshToken: string;
+  }>;
 }

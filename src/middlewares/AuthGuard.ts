@@ -26,7 +26,6 @@ export const AuthGuard = (
       throw new FORBIDDEN_ERROR();
     }
     req.user = (decoded as JwtPayload).email;
-    console.log(req.user);
     next();
   });
 };

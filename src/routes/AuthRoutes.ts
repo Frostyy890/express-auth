@@ -10,5 +10,6 @@ const controller = new AuthController(authService, userService);
 const router = express.Router();
 router.post("/login", controller.login.bind(controller));
 router.post("/register", controller.register.bind(controller));
+router.post("/refresh", controller.refresh.bind(controller));
 
 export { router as AuthRouter };

@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { IUser } from "../models";
 import { IUserController } from "../interfaces";
 import { UserService } from "../services";
+import { BAD_REQUEST_ERROR } from "../errors/common";
 
 export default class UserController implements IUserController {
   constructor(private readonly userService: UserService) {}
@@ -18,13 +19,16 @@ export default class UserController implements IUserController {
     const user = await this.userService.getById(id);
     res.status(200).json({ data: user });
   }
-  async getByEmail(
+  async getByAttribute(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    const { email } = req.body;
-    const user = await this.userService.getByEmail(email);
+    const { attribute, value } = req.params;
+    const user = await this.userService.getByAttribute(
+      attribute as keyof IUser,
+      value
+    );
     res.status(200).json({ data: user });
   }
   async create(req: Request, res: Response, next: NextFunction): Promise<void> {

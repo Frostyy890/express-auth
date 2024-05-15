@@ -10,6 +10,7 @@ const router = express.Router();
 router
   .get("/", controller.getAll.bind(controller))
   .get("/:id", controller.getById.bind(controller))
+  .get("/:attribute/:value", controller.getByAttribute.bind(controller))
   .post("/", controller.create.bind(controller))
   .patch("/:id", controller.update.bind(controller))
   .delete("/:id", controller.delete.bind(controller));
