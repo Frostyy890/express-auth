@@ -20,6 +20,16 @@ export default class UserService implements IUserService {
     return user;
   }
   async getByAttribute(attribute: keyof IUser, value: string): Promise<IUser> {
+    const allowedUserAttributes: (keyof IUser)[] = [
+      "_id",
+      "email",
+      "password",
+      "refreshToken",
+    ];
+    if (!allowedUserAttributes.includes(attribute))
+      throw new BAD_REQUEST_ERROR({
+        message: `Invalid attribute: ${attribute}`,
+      });
     const user = await this.user.findOne({ [attribute]: value }).exec();
     if (!user)
       throw new NOT_FOUND_ERROR({

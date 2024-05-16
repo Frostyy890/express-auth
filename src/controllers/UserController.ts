@@ -2,12 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import { IUser } from "../models";
 import { IUserController } from "../interfaces";
 import { UserService } from "../services";
-import { BAD_REQUEST_ERROR } from "../errors/common";
 
 export default class UserController implements IUserController {
   constructor(private readonly userService: UserService) {}
   async getAll(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const users: IUser[] = await this.userService.getAll();
+    const users = await this.userService.getAll();
     res.status(200).json({ data: users });
   }
   async getById(
