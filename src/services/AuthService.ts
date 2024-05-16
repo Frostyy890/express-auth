@@ -12,7 +12,8 @@ export default class AuthService implements IAuthService {
     password: string
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const isMatch = await compare(password, userInDb.password);
-    if (!isMatch) throw new UNAUTHORIZED_ERROR({ message: "Wrong password" });
+    if (!isMatch)
+      throw new UNAUTHORIZED_ERROR({ message: "Inorrect password" });
     const { accessToken, refreshToken } = genAccessRefreshToken({
       email: userInDb.email,
     });

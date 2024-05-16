@@ -12,7 +12,7 @@ export const AuthGuard = (
   req: AuthRequest,
   res: Response,
   next: NextFunction
-) => {
+): void => {
   const { authorization } = req.headers;
   if (!authorization) {
     throw new UNAUTHORIZED_ERROR();
