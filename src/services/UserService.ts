@@ -7,6 +7,7 @@ import {
 } from "../errors/common";
 import { IUserService, UserData } from "../interfaces";
 import { hash } from "bcrypt";
+import { Roles } from "../configs/roles";
 
 export default class UserService implements IUserService {
   constructor(private readonly user: Model<IUser>) {}
@@ -39,6 +40,7 @@ export default class UserService implements IUserService {
   }
   async create(userData: UserData): Promise<IUser> {
     const { email, password } = userData;
+    const defaultRole = Roles.USER;
     const userInDb = await this.user.findOne({ email }).exec();
     if (userInDb) {
       throw new CONFLICT_ERROR({
@@ -50,6 +52,7 @@ export default class UserService implements IUserService {
     const hashedPassword = await hash(password, 10);
     const newUser = await this.user.create({
       ...userData,
+      roles: [defaultRole],
       password: hashedPassword,
     });
     return newUser;

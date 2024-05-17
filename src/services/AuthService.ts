@@ -14,10 +14,7 @@ export default class AuthService implements IAuthService {
     const isMatch = await compare(password, userInDb.password);
     if (!isMatch)
       throw new UNAUTHORIZED_ERROR({ message: "Inorrect password" });
-    const { accessToken, refreshToken } = genAccessRefreshToken({
-      email: userInDb.email,
-    });
-    return { accessToken, refreshToken };
+    return genAccessRefreshToken({ email: userInDb.email });
   }
   async register(
     email: string

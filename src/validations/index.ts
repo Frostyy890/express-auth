@@ -1,2 +1,2 @@
-import { auth_validation_constraints } from "./AuthValidation";
-export { auth_validation_constraints };
+import { user_validation_constraints } from "./UserValidation";
+export { user_validation_constraints };

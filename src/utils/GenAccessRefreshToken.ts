@@ -2,9 +2,9 @@ import { sign } from "jsonwebtoken";
 import { config } from "dotenv";
 config();
 
-export const genAccessRefreshToken = (payload: {
-  [key: string]: string;
-}): { accessToken: string; refreshToken: string } => {
+export const genAccessRefreshToken = (
+  payload: object
+): { accessToken: string; refreshToken: string } => {
   const accessToken = sign(payload, process.env.ACCESS_TOKEN_SECRET as string, {
     expiresIn: "60s",
   });

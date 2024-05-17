@@ -70,9 +70,8 @@ export default class AuthController implements IAuthController {
   }
   async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
     const cookies = req.cookies;
-    const SUCCESS_MESSAGE = "Successfully logged out";
     if (!cookies?.jwt) {
-      res.status(204).json({ message: SUCCESS_MESSAGE });
+      res.sendStatus(204);
       return;
     }
     const refreshToken = cookies.jwt;
@@ -82,7 +81,7 @@ export default class AuthController implements IAuthController {
     );
     if (!userInDb) {
       res.clearCookie("jwt", COOKIE_OPTIONS);
-      res.status(204).json({ message: SUCCESS_MESSAGE });
+      res.sendStatus(204);
       return;
     }
     // DELETE REFRESH TOKEN FROM DB
@@ -90,6 +89,6 @@ export default class AuthController implements IAuthController {
       refreshToken: "",
     });
     res.clearCookie("jwt", COOKIE_OPTIONS);
-    res.status(204).json({ message: SUCCESS_MESSAGE });
+    res.sendStatus(204);
   }
 }
