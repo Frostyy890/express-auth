@@ -5,7 +5,7 @@ export interface UserData {
   email: string;
   password: string;
   refreshToken?: string;
-  roles?: Roles[];
+  roles: Roles[];
 }
 //Example:
 // const newUser: UserData = {

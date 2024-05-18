@@ -1,9 +1,10 @@
-import { compare } from "bcrypt";
+import { Roles } from "../configs/roles";
 import { IUser } from "../models";
 import { FORBIDDEN_ERROR, UNAUTHORIZED_ERROR } from "../errors/common";
 import { genAccessRefreshToken } from "../utils/GenAccessRefreshToken";
-import { IAuthService } from "../interfaces";
+import { ITokenPayload, IAuthService } from "../interfaces";
 import { JwtPayload, verify } from "jsonwebtoken";
+import { compare } from "bcrypt";
 
 export default class AuthService implements IAuthService {
   constructor() {}
@@ -14,12 +15,18 @@ export default class AuthService implements IAuthService {
     const isMatch = await compare(password, userInDb.password);
     if (!isMatch)
       throw new UNAUTHORIZED_ERROR({ message: "Inorrect password" });
-    return genAccessRefreshToken({ email: userInDb.email });
+    const payload: ITokenPayload = {
+      userInfo: { email: userInDb.email, roles: userInDb.roles },
+    };
+    return genAccessRefreshToken(payload);
   }
   async register(
     email: string
   ): Promise<{ accessToken: string; refreshToken: string }> {
-    return genAccessRefreshToken({ email });
+    const payload: ITokenPayload = {
+      userInfo: { email, roles: [Roles.USER] },
+    };
+    return genAccessRefreshToken(payload);
   }
   async refresh(
     refreshToken: string,
@@ -35,8 +42,9 @@ export default class AuthService implements IAuthService {
         }
       );
     });
-    if (decoded.email !== userInDb.email)
+    const { userInfo } = decoded;
+    if (userInfo.email !== userInDb.email)
       throw new FORBIDDEN_ERROR({ message: "Invalid token" });
-    return genAccessRefreshToken({ email: decoded.email });
+    return genAccessRefreshToken({ userInfo });
   }
 }

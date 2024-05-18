@@ -6,7 +6,7 @@ import {
   NOT_FOUND_ERROR,
 } from "../errors/common";
 import { IUserService, UserData } from "../interfaces";
-import { hash } from "bcrypt";
+import { hash, compare } from "bcrypt";
 import { Roles } from "../configs/roles";
 
 export default class UserService implements IUserService {
@@ -42,13 +42,10 @@ export default class UserService implements IUserService {
     const { email, password } = userData;
     const defaultRole = Roles.USER;
     const userInDb = await this.user.findOne({ email }).exec();
-    if (userInDb) {
+    if (userInDb)
       throw new CONFLICT_ERROR({
         message: `User with email ${email} already exists`,
       });
-    }
-    if (!password)
-      throw new BAD_REQUEST_ERROR({ message: "Password is required" });
     const hashedPassword = await hash(password, 10);
     const newUser = await this.user.create({
       ...userData,
@@ -59,6 +56,7 @@ export default class UserService implements IUserService {
   }
   async update(id: string, userData: Partial<UserData>): Promise<IUser | null> {
     const { email, password } = userData;
+    const user = await this.getById(id);
     if (email) {
       const userWithSameEmail = await this.user.findOne({ email }).exec();
       if (userWithSameEmail && userWithSameEmail._id.toString() !== id) {
@@ -68,6 +66,11 @@ export default class UserService implements IUserService {
       }
     }
     if (password) {
+      const isMatch = await compare(password, user.password);
+      if (isMatch)
+        throw new BAD_REQUEST_ERROR({
+          message: "New password can't be the same as old one",
+        });
       const newHashedPassword = await hash(password, 10);
       userData.password = newHashedPassword;
     }

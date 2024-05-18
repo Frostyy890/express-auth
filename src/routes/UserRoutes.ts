@@ -3,10 +3,12 @@ import { User } from "../models";
 import { UserService } from "../services";
 import { UserController } from "../controllers";
 import { user_validation_constraints } from "../validations";
-import { ValidateRequest } from "../middlewares";
+import { AuthGuard, ValidateRequest } from "../middlewares";
+import { Permissions } from "../configs/roles";
 
 const userService = new UserService(User);
 const controller = new UserController(userService);
+const authGuard = new AuthGuard();
 
 const router = express.Router();
 router
@@ -32,6 +34,7 @@ router
   )
   .delete(
     "/:id",
+    authGuard.verifyPermissions(Permissions.DELETE),
     user_validation_constraints.getById,
     ValidateRequest,
     controller.delete.bind(controller)

@@ -7,7 +7,7 @@ const COOKIE_OPTIONS: CookieOptions = {
   httpOnly: true,
   maxAge: 24 * 60 * 60 * 1000,
   sameSite: "none",
-  secure: true,
+  // secure: true,
 };
 
 export default class AuthController implements IAuthController {
