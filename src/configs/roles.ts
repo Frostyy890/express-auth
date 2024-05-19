@@ -39,11 +39,9 @@ export const roles: IRole[] = [
 export const getPermissionsByRole = (
   userRoles: Roles[]
 ): Permissions[] | undefined => {
-  if (userRoles.includes(Roles.ADMIN)) {
+  if (userRoles.includes(Roles.ADMIN))
     return roles.find((role) => role.name === Roles.ADMIN)?.permissions;
-  } else if (userRoles.includes(Roles.MANAGER)) {
+  else if (userRoles.includes(Roles.MANAGER))
     return roles.find((role) => role.name === Roles.MANAGER)?.permissions;
-  } else {
-    return roles.find((role) => role.name === Roles.USER)?.permissions;
-  }
+  else return roles.find((role) => role.name === Roles.USER)?.permissions;
 };

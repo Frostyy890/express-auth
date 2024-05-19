@@ -28,7 +28,7 @@ export default class AuthGuard implements IAuthGuard {
     allowedRoles: Roles[]
   ): (req: IAuthRequest, res: Response, next: NextFunction) => void {
     return (req: IAuthRequest, res: Response, next: NextFunction) => {
-      if (!req?.user && !req?.user?.roles)
+      if (!req?.user && !req.user?.roles)
         throw new FORBIDDEN_ERROR({
           message: "You're not authorized to access this resource",
         });
@@ -44,7 +44,7 @@ export default class AuthGuard implements IAuthGuard {
   }
   public verifyPermissions(permission: Permissions) {
     return (req: IAuthRequest, res: Response, next: NextFunction) => {
-      if (!req?.user && !req?.user?.roles)
+      if (!req?.user && !req.user?.roles)
         throw new FORBIDDEN_ERROR({
           message: "You're not authorized to access this resource",
         });

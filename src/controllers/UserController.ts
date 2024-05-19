@@ -37,7 +37,6 @@ export default class UserController implements IUserController {
 
   async update(req: Request, res: Response, next: NextFunction): Promise<void> {
     const { id } = req.params;
-    await this.userService.getById(id);
     const updatedUser = await this.userService.update(id, req.body);
     res
       .status(200)

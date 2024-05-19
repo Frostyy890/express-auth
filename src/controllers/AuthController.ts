@@ -53,9 +53,7 @@ export default class AuthController implements IAuthController {
     next: NextFunction
   ): Promise<void> {
     const cookies = req.cookies;
-    if (!cookies?.jwt) {
-      throw new UNAUTHORIZED_ERROR();
-    }
+    if (!cookies?.jwt) throw new UNAUTHORIZED_ERROR();
     const refreshToken: string = cookies.jwt;
     const userInDb = await this.userService.getByAttribute(
       "refreshToken",
