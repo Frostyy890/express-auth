@@ -2,7 +2,9 @@ import { Schema, Document, model } from "mongoose";
 import { UserData } from "../interfaces";
 import { Roles } from "../configs/roles";
 
-export interface IUser extends UserData, Document {}
+export interface IUser extends UserData, Document {
+  roles: Roles[];
+}
 
 const UserSchema = new Schema<IUser>({
   email: {

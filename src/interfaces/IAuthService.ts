@@ -8,7 +8,7 @@ export default interface IAuthService {
     accessToken: string;
     refreshToken: string;
   }>;
-  register(email: string): Promise<{
+  register(newUser: IUser): Promise<{
     accessToken: string;
     refreshToken: string;
   }>;

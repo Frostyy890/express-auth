@@ -21,10 +21,11 @@ export default class AuthService implements IAuthService {
     return genAccessRefreshToken(payload);
   }
   async register(
-    email: string
+    newUser: IUser
   ): Promise<{ accessToken: string; refreshToken: string }> {
+    const { email, roles } = newUser;
     const payload: ITokenPayload = {
-      userInfo: { email, roles: [Roles.USER] },
+      userInfo: { email, roles },
     };
     return genAccessRefreshToken(payload);
   }

@@ -5,15 +5,8 @@ export interface UserData {
   email: string;
   password: string;
   refreshToken?: string;
-  roles: Roles[];
+  roles?: Roles[];
 }
-//Example:
-// const newUser: UserData = {
-//   email: "",
-//   password: "",
-//   refreshToken: "",
-//   roles: [Roles.USER, Roles.MANAGER, Roles.ADMIN],
-// };
 
 export interface IUserService {
   getAll(): Promise<IUser[]>;

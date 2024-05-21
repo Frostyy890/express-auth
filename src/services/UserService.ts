@@ -7,13 +7,13 @@ import {
 } from "../errors/common";
 import { IUserService, UserData } from "../interfaces";
 import { hash, compare } from "bcrypt";
-import { Roles } from "../configs/roles";
+import { Roles, roles } from "../configs/roles";
 
 export default class UserService implements IUserService {
   constructor(private readonly user: Model<IUser>) {}
 
   async getAll(): Promise<IUser[]> {
-    return this.user.find({}).exec();
+    return this.user.find({}).lean().exec();
   }
   async getById(id: string): Promise<IUser> {
     const user = await this.user.findById(id).exec();
@@ -39,7 +39,7 @@ export default class UserService implements IUserService {
     return user;
   }
   async create(userData: UserData): Promise<IUser> {
-    const { email, password } = userData;
+    const { email, password, roles } = userData;
     const defaultRole = Roles.USER;
     const userInDb = await this.user.findOne({ email }).exec();
     if (userInDb)
@@ -47,12 +47,9 @@ export default class UserService implements IUserService {
         message: `User with email ${email} already exists`,
       });
     const hashedPassword = await hash(password, 10);
-    const newUser = await this.user.create({
-      ...userData,
-      roles: [defaultRole],
-      password: hashedPassword,
-    });
-    return newUser;
+    const userRoles = roles ? roles : [defaultRole];
+    const newUser = { email, roles: userRoles, password: hashedPassword };
+    return await this.user.create(newUser);
   }
   async update(id: string, userData: Partial<UserData>): Promise<IUser | null> {
     const { email, password } = userData;
