@@ -11,12 +11,12 @@ export enum Permissions {
   DELETE = "delete",
 }
 
-interface IRole {
+export interface IRole {
   name: Roles;
   permissions: Permissions[];
 }
 
-export const roles: IRole[] = [
+export const ROLES_LIST: IRole[] = [
   {
     name: Roles.ADMIN,
     permissions: [
@@ -35,13 +35,3 @@ export const roles: IRole[] = [
     permissions: [Permissions.READ],
   },
 ];
-
-export const getPermissionsByRole = (
-  userRoles: Roles[]
-): Permissions[] | undefined => {
-  if (userRoles.includes(Roles.ADMIN))
-    return roles.find((role) => role.name === Roles.ADMIN)?.permissions;
-  else if (userRoles.includes(Roles.MANAGER))
-    return roles.find((role) => role.name === Roles.MANAGER)?.permissions;
-  else return roles.find((role) => role.name === Roles.USER)?.permissions;
-};

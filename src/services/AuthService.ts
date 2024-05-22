@@ -1,4 +1,3 @@
-import { Roles } from "../configs/roles";
 import { IUser } from "../models";
 import { FORBIDDEN_ERROR, UNAUTHORIZED_ERROR } from "../errors/common";
 import { genAccessRefreshToken } from "../utils/GenAccessRefreshToken";

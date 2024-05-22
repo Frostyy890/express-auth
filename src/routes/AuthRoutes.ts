@@ -4,7 +4,7 @@ import { User } from "../models";
 import { AuthController } from "../controllers";
 import { ValidateRequest } from "../middlewares";
 import { user_validation_constraints } from "../validations";
-import AuthFacade from "../facades/AuthFacade";
+import { AuthFacade } from "../facades";
 
 const authService = new AuthService();
 const userService = new UserService(User);

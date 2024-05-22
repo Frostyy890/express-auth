@@ -7,7 +7,7 @@ import {
 } from "../errors/common";
 import { IUserService, UserData } from "../interfaces";
 import { hash, compare } from "bcrypt";
-import { Roles, roles } from "../configs/roles";
+import { Roles } from "../configs/roles";
 
 export default class UserService implements IUserService {
   constructor(private readonly user: Model<IUser>) {}

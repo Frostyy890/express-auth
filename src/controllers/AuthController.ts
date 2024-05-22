@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction, CookieOptions } from "express";
 import { IAuthController } from "../interfaces";
-import AuthFacade from "../facades/AuthFacade";
+import { AuthFacade } from "../facades";
 
 const REFRESH_TOKEN_COOKIE_OPTIONS: CookieOptions = {
   httpOnly: true,

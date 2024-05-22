@@ -1,2 +1,3 @@
 import { IUser, User } from "./UserModel";
-export { IUser, User };
+import Role from "./RoleModel";
+export { IUser, User, Role };

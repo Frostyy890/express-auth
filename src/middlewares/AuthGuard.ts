@@ -3,7 +3,8 @@ import { FORBIDDEN_ERROR, UNAUTHORIZED_ERROR } from "../errors/common";
 import { JwtPayload, verify } from "jsonwebtoken";
 import { config } from "dotenv";
 import { IAuthGuard, IAuthRequest } from "../interfaces";
-import { Roles, Permissions, getPermissionsByRole } from "../configs/roles";
+import { Roles, Permissions } from "../configs/roles";
+import { Role } from "../models";
 
 config();
 
@@ -19,7 +20,10 @@ export default class AuthGuard implements IAuthGuard {
     const [bearer, token] = authorization.split(" ");
     if (bearer !== "Bearer") throw new UNAUTHORIZED_ERROR();
     verify(token, process.env.ACCESS_TOKEN_SECRET as string, (err, decoded) => {
-      if (err) throw new FORBIDDEN_ERROR({ message: "Failed to verify token" });
+      if (err)
+        throw new FORBIDDEN_ERROR({
+          message: "Failed to verify token. Your session may have expired",
+        });
       req.user = (decoded as JwtPayload).userInfo;
       next();
     });
@@ -27,11 +31,8 @@ export default class AuthGuard implements IAuthGuard {
   public verifyRoles(
     allowedRoles: Roles[]
   ): (req: IAuthRequest, res: Response, next: NextFunction) => void {
-    return (req: IAuthRequest, res: Response, next: NextFunction) => {
-      if (!req?.user && !req.user?.roles)
-        throw new FORBIDDEN_ERROR({
-          message: "You're not authorized to access this resource",
-        });
+    return (req: IAuthRequest, res: Response, next: NextFunction): void => {
+      if (!req?.user && !req.user?.roles) throw new FORBIDDEN_ERROR();
       const hasRole = req.user.roles.some((role) =>
         allowedRoles.includes(role)
       );
@@ -42,13 +43,12 @@ export default class AuthGuard implements IAuthGuard {
       next();
     };
   }
-  public verifyPermissions(permission: Permissions) {
-    return (req: IAuthRequest, res: Response, next: NextFunction) => {
-      if (!req?.user && !req.user?.roles)
-        throw new FORBIDDEN_ERROR({
-          message: "You're not authorized to access this resource",
-        });
-      const userPermissions = getPermissionsByRole(req.user.roles);
+  public verifyPermissions(
+    permission: Permissions
+  ): (req: IAuthRequest, res: Response, next: NextFunction) => void {
+    return (req: IAuthRequest, res: Response, next: NextFunction): void => {
+      if (!req?.user && !req.user?.roles) throw new FORBIDDEN_ERROR();
+      const userPermissions = new Role().getPermissionsByRole(req.user.roles);
       if (!userPermissions)
         throw new FORBIDDEN_ERROR({
           message: "You're not authorized to access this resource",
