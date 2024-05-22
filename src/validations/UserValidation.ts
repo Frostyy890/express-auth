@@ -27,7 +27,7 @@ export const user_validation_constraints = {
   refresh: [
     cookie("jwt")
       .notEmpty()
-      .withMessage("Session expired please login and try again")
+      .withMessage("It seems your session has expired, please login and try again")
       .bail()
       .isJWT()
       .withMessage("Invalid token"),

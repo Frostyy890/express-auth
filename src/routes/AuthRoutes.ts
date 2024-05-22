@@ -4,10 +4,12 @@ import { User } from "../models";
 import { AuthController } from "../controllers";
 import { ValidateRequest } from "../middlewares";
 import { user_validation_constraints } from "../validations";
+import AuthFacade from "../facades/AuthFacade";
 
 const authService = new AuthService();
 const userService = new UserService(User);
-const controller = new AuthController(authService, userService);
+const facade = new AuthFacade(authService, userService);
+const controller = new AuthController(facade);
 
 const router = express.Router();
 router.post(
