@@ -8,11 +8,7 @@ import { Role } from "../models";
 
 export default class AuthGuard implements IAuthGuard {
   constructor() {}
-  public verifyToken(
-    req: IAuthRequest,
-    res: Response,
-    next: NextFunction
-  ): void {
+  verifyToken(req: IAuthRequest, res: Response, next: NextFunction): void {
     const { authorization } = req.headers;
     if (!authorization) throw new UNAUTHORIZED_ERROR();
     const [bearer, token] = authorization.split(" ");
@@ -26,9 +22,7 @@ export default class AuthGuard implements IAuthGuard {
       next();
     });
   }
-  public verifyRoles(
-    allowedRoles: Roles[]
-  ): (req: IAuthRequest, res: Response, next: NextFunction) => void {
+  verifyRoles(allowedRoles: Roles[]) {
     return (req: IAuthRequest, res: Response, next: NextFunction): void => {
       if (!req?.user && !req.user?.roles) throw new FORBIDDEN_ERROR();
       const hasRole = req.user.roles.some((role) =>
@@ -41,17 +35,11 @@ export default class AuthGuard implements IAuthGuard {
       next();
     };
   }
-  public verifyPermissions(
-    permission: Permissions
-  ): (req: IAuthRequest, res: Response, next: NextFunction) => void {
+  verifyPermissions(permission: Permissions) {
     return (req: IAuthRequest, res: Response, next: NextFunction): void => {
       if (!req?.user && !req.user?.roles) throw new FORBIDDEN_ERROR();
       const userPermissions = new Role().getPermissionsByRole(req.user.roles);
-      if (!userPermissions)
-        throw new FORBIDDEN_ERROR({
-          message: "You're not authorized to access this resource",
-        });
-      if (!userPermissions.includes(permission))
+      if (!userPermissions || !userPermissions.includes(permission))
         throw new FORBIDDEN_ERROR({
           message: `You're not authorized to ${permission}`,
         });
