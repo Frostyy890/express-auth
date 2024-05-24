@@ -37,7 +37,8 @@ export default class AuthService implements IAuthService {
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET as string,
         (err, decoded) => {
-          if (err) reject(err);
+          if (err)
+            throw new FORBIDDEN_ERROR({ message: "Failed to verify token" });
           else resolve(decoded as JwtPayload);
         }
       );

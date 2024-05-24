@@ -14,8 +14,7 @@ export default class UserController implements IUserController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    const { id } = req.params;
-    const user = await this.userService.getById(id);
+    const user = await this.userService.getById(req.params.id);
     res.status(200).json({ data: user });
   }
   async getByAttribute(
@@ -36,16 +35,14 @@ export default class UserController implements IUserController {
   }
 
   async update(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const { id } = req.params;
-    const updatedUser = await this.userService.update(id, req.body);
+    const updatedUser = await this.userService.update(req.params.id, req.body);
     res
       .status(200)
       .json({ data: updatedUser, message: "Successfully updated" });
   }
 
   async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const { id } = req.params;
-    await this.userService.delete(id);
+    await this.userService.delete(req.params.id);
     res.status(200).json({ message: "Successfully deleted" });
   }
 }

@@ -47,7 +47,7 @@ export default class UserService implements IUserService {
         message: `User with email ${email} already exists`,
       });
     const hashedPassword = await hash(password, 10);
-    const userRoles = roles ? roles : [defaultRole];
+    const userRoles = roles ?? [defaultRole];
     const newUser = { email, roles: userRoles, password: hashedPassword };
     return await this.user.create(newUser);
   }

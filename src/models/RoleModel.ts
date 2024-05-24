@@ -5,7 +5,6 @@ export default class Role {
   constructor() {
     this.roles = ROLES_LIST;
   }
-
   getRoles() {
     return this.roles;
   }

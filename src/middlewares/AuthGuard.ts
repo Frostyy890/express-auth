@@ -22,7 +22,7 @@ export default class AuthGuard implements IAuthGuard {
     verify(token, process.env.ACCESS_TOKEN_SECRET as string, (err, decoded) => {
       if (err)
         throw new FORBIDDEN_ERROR({
-          message: "Failed to verify token. Your session may have expired",
+          message: "Failed to verify token",
         });
       req.user = (decoded as JwtPayload).userInfo;
       next();
