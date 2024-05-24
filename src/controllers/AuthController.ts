@@ -16,12 +16,7 @@ export default class AuthController implements IAuthController {
     res
       .status(200)
       .cookie("jwt", refreshToken, REFRESH_TOKEN_COOKIE_OPTIONS)
-      .json({
-        data: {
-          accessToken,
-          message: "Successfully signed in",
-        },
-      });
+      .json({ accessToken });
   }
   async register(
     req: Request,
@@ -34,9 +29,7 @@ export default class AuthController implements IAuthController {
     res
       .status(200)
       .cookie("jwt", refreshToken, REFRESH_TOKEN_COOKIE_OPTIONS)
-      .json({
-        data: { accessToken, message: "Successfully signed up" },
-      });
+      .json({ accessToken });
   }
   async refresh(
     req: Request,
@@ -44,7 +37,7 @@ export default class AuthController implements IAuthController {
     next: NextFunction
   ): Promise<void> {
     const { accessToken } = await this.authFacade.refresh(req.cookies.jwt);
-    res.status(200).json({ data: { accessToken } });
+    res.status(200).json({ accessToken });
   }
   async logout(req: Request, res: Response, next: NextFunction): Promise<void> {
     const { cookies } = req;
