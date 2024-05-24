@@ -1,4 +1,4 @@
-import { Roles } from "../configs/roles";
+import { Roles } from "../config/roles";
 import { IUser } from "../models";
 
 export interface UserData {

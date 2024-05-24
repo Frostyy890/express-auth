@@ -1,12 +1,10 @@
 import { Response, NextFunction } from "express";
 import { FORBIDDEN_ERROR, UNAUTHORIZED_ERROR } from "../errors/common";
 import { JwtPayload, verify } from "jsonwebtoken";
-import { config } from "dotenv";
+import { ACCESS_TOKEN_SECRET } from "../constants";
 import { IAuthGuard, IAuthRequest } from "../interfaces";
-import { Roles, Permissions } from "../configs/roles";
+import { Roles, Permissions } from "../config/roles";
 import { Role } from "../models";
-
-config();
 
 export default class AuthGuard implements IAuthGuard {
   constructor() {}
@@ -19,7 +17,7 @@ export default class AuthGuard implements IAuthGuard {
     if (!authorization) throw new UNAUTHORIZED_ERROR();
     const [bearer, token] = authorization.split(" ");
     if (bearer !== "Bearer") throw new UNAUTHORIZED_ERROR();
-    verify(token, process.env.ACCESS_TOKEN_SECRET as string, (err, decoded) => {
+    verify(token, ACCESS_TOKEN_SECRET, (err, decoded) => {
       if (err)
         throw new FORBIDDEN_ERROR({
           message: "Failed to verify token",

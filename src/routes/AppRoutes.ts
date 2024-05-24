@@ -2,7 +2,7 @@ import express from "express";
 import { UserRouter } from "./UserRoutes";
 import { AuthRouter } from "./AuthRoutes";
 import { AuthGuard } from "../middlewares";
-import { Roles } from "../configs/roles";
+import { Roles } from "../config/roles";
 
 const authGuard = new AuthGuard();
 const router = express.Router();

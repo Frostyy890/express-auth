@@ -4,6 +4,7 @@ import { genAccessRefreshToken } from "../utils/GenAccessRefreshToken";
 import { ITokenPayload, IAuthService } from "../interfaces";
 import { JwtPayload, verify } from "jsonwebtoken";
 import { compare } from "bcrypt";
+import { REFRESH_TOKEN_SECRET } from "../constants";
 
 export default class AuthService implements IAuthService {
   constructor() {}
@@ -32,16 +33,13 @@ export default class AuthService implements IAuthService {
     refreshToken: string,
     userInDb: IUser
   ): Promise<{ accessToken: string; refreshToken: string }> {
-    const decoded: JwtPayload = await new Promise((resolve, reject) => {
-      verify(
-        refreshToken,
-        process.env.REFRESH_TOKEN_SECRET as string,
-        (err, decoded) => {
-          if (err)
-            throw new FORBIDDEN_ERROR({ message: "Failed to verify token" });
-          else resolve(decoded as JwtPayload);
-        }
-      );
+    const decoded: JwtPayload = await new Promise((resolve, _) => {
+      verify(refreshToken, REFRESH_TOKEN_SECRET, (err, decoded) => {
+        if (err) {
+          console.error(err);
+          throw new FORBIDDEN_ERROR({ message: "Failed to verify token" });
+        } else resolve(decoded as JwtPayload);
+      });
     });
     const { userInfo } = decoded;
     if (userInfo.email !== userInDb.email)

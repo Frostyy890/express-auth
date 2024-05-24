@@ -4,7 +4,7 @@ import { UserService } from "../services";
 import { UserController } from "../controllers";
 import { user_validation_constraints } from "../validations";
 import { AuthGuard, ValidateRequest } from "../middlewares";
-import { Permissions } from "../configs/roles";
+import { Permissions } from "../config/roles";
 
 const userService = new UserService(User);
 const controller = new UserController(userService);
@@ -15,7 +15,7 @@ router
   .get("/", controller.getAll.bind(controller))
   .get(
     "/:id",
-    user_validation_constraints.getById,
+    user_validation_constraints.objectId,
     ValidateRequest,
     controller.getById.bind(controller)
   )
@@ -35,7 +35,7 @@ router
   .delete(
     "/:id",
     authGuard.verifyPermissions(Permissions.DELETE),
-    user_validation_constraints.getById,
+    user_validation_constraints.objectId,
     ValidateRequest,
     controller.delete.bind(controller)
   );

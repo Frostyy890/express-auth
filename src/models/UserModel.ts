@@ -1,6 +1,6 @@
 import { Schema, Document, model } from "mongoose";
 import { UserData } from "../interfaces";
-import { Roles } from "../configs/roles";
+import { Roles } from "../config/roles";
 
 export interface IUser extends UserData, Document {
   roles: Roles[];

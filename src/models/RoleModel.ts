@@ -1,4 +1,4 @@
-import { IRole, Roles, ROLES_LIST } from "../configs/roles";
+import { IRole, Roles, ROLES_LIST } from "../config/roles";
 
 export default class Role {
   private readonly roles: IRole[];

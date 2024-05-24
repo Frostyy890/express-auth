@@ -3,7 +3,7 @@ import { AuthService, UserService } from "../services";
 import { User } from "../models";
 import { AuthController } from "../controllers";
 import { ValidateRequest } from "../middlewares";
-import { user_validation_constraints } from "../validations";
+import { auth_validation_constraints } from "../validations";
 import { AuthFacade } from "../facades";
 
 const authService = new AuthService();
@@ -14,19 +14,19 @@ const controller = new AuthController(facade);
 const router = express.Router();
 router.post(
   "/login",
-  user_validation_constraints.create,
+  auth_validation_constraints.login,
   ValidateRequest,
   controller.login.bind(controller)
 );
 router.post(
   "/register",
-  user_validation_constraints.create,
+  auth_validation_constraints.login,
   ValidateRequest,
   controller.register.bind(controller)
 );
 router.post(
   "/refresh",
-  user_validation_constraints.refresh,
+  auth_validation_constraints.refreshToken,
   ValidateRequest,
   controller.refresh.bind(controller)
 );

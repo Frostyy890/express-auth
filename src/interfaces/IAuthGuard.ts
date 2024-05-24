@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { Roles, Permissions } from "../configs/roles";
+import { Roles, Permissions } from "../config/roles";
 
 type userInfo = { email: string; roles: Roles[] };
 
