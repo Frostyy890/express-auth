@@ -1,4 +1,4 @@
-import { UserData, IAuthFacade } from "../interfaces";
+import { IAuthFacade, IAuthTokens, UserCredentials } from "../interfaces";
 import { IUser } from "../models";
 import { AuthService, UserService } from "../services";
 
@@ -7,10 +7,8 @@ export default class AuthFacade implements IAuthFacade {
     private readonly authService: AuthService,
     private readonly userService: UserService
   ) {}
-  public async login(
-    userData: UserData
-  ): Promise<{ accessToken: string; refreshToken: string }> {
-    const { email, password } = userData;
+  public async login(userCredentials: UserCredentials): Promise<IAuthTokens> {
+    const { email, password } = userCredentials;
     const userInDb = await this.userService.getByAttribute("email", email);
     const { accessToken, refreshToken } = await this.authService.login(
       userInDb,
@@ -22,9 +20,9 @@ export default class AuthFacade implements IAuthFacade {
     return { accessToken, refreshToken };
   }
   public async register(
-    userData: UserData
-  ): Promise<{ accessToken: string; refreshToken: string }> {
-    const { email, password } = userData;
+    userCredentials: UserCredentials
+  ): Promise<IAuthTokens> {
+    const { email, password } = userCredentials;
     const newUser = await this.userService.create({ email, password });
     const { accessToken, refreshToken } = await this.authService.register(
       newUser

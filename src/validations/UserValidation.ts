@@ -26,5 +26,10 @@ export const user_validation_constraints = {
       .optional()
       .isLength({ min: 6 })
       .withMessage("Password must be at least 6 characters long"),
+    body("roles").optional().isArray().withMessage("Roles must be an array"),
+    body("roles.*")
+      .optional()
+      .isIn(Object.values(Roles))
+      .withMessage("Invalid role"),
   ],
 };

@@ -1,22 +1,13 @@
 import { IUser } from "../models";
 
-export default interface IAuthService {
-  login(
-    userInDb: IUser,
-    password: string
-  ): Promise<{
-    accessToken: string;
-    refreshToken: string;
-  }>;
-  register(newUser: IUser): Promise<{
-    accessToken: string;
-    refreshToken: string;
-  }>;
-  refresh(
-    refreshToken: string,
-    userInDb: IUser
-  ): Promise<{
-    accessToken: string;
-    refreshToken: string;
-  }>;
+export interface IAuthTokens {
+  accessToken: string;
+  refreshToken: string;
+}
+
+
+export interface IAuthService {
+  login(userInDb: IUser, password: string): Promise<IAuthTokens>;
+  register(newUser: IUser): Promise<IAuthTokens>;
+  refresh(refreshToken: string, userInDb: IUser): Promise<IAuthTokens>;
 }

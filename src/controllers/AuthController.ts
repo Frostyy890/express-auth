@@ -43,8 +43,7 @@ export default class AuthController implements IAuthController {
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    const refreshToken: string = req.cookies.jwt;
-    const { accessToken } = await this.authFacade.refresh(refreshToken);
+    const { accessToken } = await this.authFacade.refresh(req.cookies.jwt);
     res.status(200).json({ data: { accessToken } });
   }
   async logout(req: Request, res: Response, next: NextFunction): Promise<void> {

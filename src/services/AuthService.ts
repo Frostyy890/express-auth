@@ -1,17 +1,14 @@
 import { IUser } from "../models";
 import { FORBIDDEN_ERROR, UNAUTHORIZED_ERROR } from "../errors/common";
 import { genAccessRefreshToken } from "../utils/GenAccessRefreshToken";
-import { ITokenPayload, IAuthService } from "../interfaces";
+import { ITokenPayload, IAuthService, IAuthTokens } from "../interfaces";
 import { JwtPayload, verify } from "jsonwebtoken";
 import { compare } from "bcrypt";
 import { REFRESH_TOKEN_SECRET } from "../constants";
 
 export default class AuthService implements IAuthService {
   constructor() {}
-  async login(
-    userInDb: IUser,
-    password: string
-  ): Promise<{ accessToken: string; refreshToken: string }> {
+  async login(userInDb: IUser, password: string): Promise<IAuthTokens> {
     const isMatch = await compare(password, userInDb.password);
     if (!isMatch)
       throw new UNAUTHORIZED_ERROR({ message: "Inorrect password" });
@@ -20,19 +17,14 @@ export default class AuthService implements IAuthService {
     };
     return genAccessRefreshToken(payload);
   }
-  async register(
-    newUser: IUser
-  ): Promise<{ accessToken: string; refreshToken: string }> {
+  async register(newUser: IUser): Promise<IAuthTokens> {
     const { email, roles } = newUser;
     const payload: ITokenPayload = {
       userInfo: { email, roles },
     };
     return genAccessRefreshToken(payload);
   }
-  async refresh(
-    refreshToken: string,
-    userInDb: IUser
-  ): Promise<{ accessToken: string; refreshToken: string }> {
+  async refresh(refreshToken: string, userInDb: IUser): Promise<IAuthTokens> {
     const decoded: JwtPayload = await new Promise((resolve, _) => {
       verify(refreshToken, REFRESH_TOKEN_SECRET, (err, decoded) => {
         if (err) {
