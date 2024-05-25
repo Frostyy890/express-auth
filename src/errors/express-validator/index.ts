@@ -25,7 +25,7 @@ export default class REQUEST_VALIDATION_ERROR extends CustomError {
 
   get errors() {
     return this._validationErrors.map((err) => ({
-      message: err.type === "field" ? `${err.path}: ${err.msg}` : err.msg,
+      message: err.type === "field" ? err.path + " " + err.msg : err.msg,
       context: this._context,
     }));
   }

@@ -10,6 +10,7 @@ export const CORS_OPTIONS: CorsOptions = {
       callback(new FORBIDDEN_ERROR({ message: "Not allowed by CORS" }));
     }
   },
+  methods: "GET, POST, PATCH, DELETE",
   credentials: true,
   optionsSuccessStatus: 200,
 };
