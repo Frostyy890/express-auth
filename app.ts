@@ -6,7 +6,7 @@ import cookieParser from "cookie-parser";
 import "express-async-errors";
 import { connectDB } from "./src/config/db";
 import { AppRouter } from "./src/routes/AppRoutes";
-import { ErrorHandler, ReqLogger } from "./src/middlewares";
+import { ErrorHandler, Logger } from "./src/middlewares";
 import { NOT_FOUND_ERROR } from "./src/errors/common";
 
 const app = express();
@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 //MIDDLEWARES
 //ERROR HANDLER
-app.use(ReqLogger);
+app.use(Logger);
 app.use("/api", AppRouter);
 // HANDLE UNKNOWN API REQUESTS
 app.use((_req, _res, next) => {

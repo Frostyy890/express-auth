@@ -1,6 +1,6 @@
 import { IUser } from "../models";
 import { FORBIDDEN_ERROR, UNAUTHORIZED_ERROR } from "../errors/common";
-import { genAccessRefreshToken } from "../utils/GenAccessRefreshToken";
+import { generateAuthTokens } from "../utils/GenerateAuthTokens";
 import { ITokenPayload, IAuthService, IAuthTokens } from "../interfaces";
 import { JwtPayload, verify } from "jsonwebtoken";
 import { compare } from "bcrypt";
@@ -15,14 +15,14 @@ export default class AuthService implements IAuthService {
     const payload: ITokenPayload = {
       userInfo: { email: userInDb.email, roles: userInDb.roles },
     };
-    return genAccessRefreshToken(payload);
+    return generateAuthTokens(payload);
   }
   async register(newUser: IUser): Promise<IAuthTokens> {
     const { email, roles } = newUser;
     const payload: ITokenPayload = {
       userInfo: { email, roles },
     };
-    return genAccessRefreshToken(payload);
+    return generateAuthTokens(payload);
   }
   async refresh(refreshToken: string, userInDb: IUser): Promise<IAuthTokens> {
     const decoded: JwtPayload = await new Promise((resolve, _) => {
@@ -36,6 +36,6 @@ export default class AuthService implements IAuthService {
     const { userInfo } = decoded;
     if (userInfo.email !== userInDb.email)
       throw new FORBIDDEN_ERROR({ message: "Invalid token" });
-    return genAccessRefreshToken({ userInfo });
+    return generateAuthTokens({ userInfo });
   }
 }

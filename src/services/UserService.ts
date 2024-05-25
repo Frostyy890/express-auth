@@ -13,7 +13,7 @@ export default class UserService implements IUserService {
   constructor(private readonly user: Model<IUser>) {}
 
   async getAll(): Promise<IUser[]> {
-    return this.user.find({}).lean().exec();
+    return this.user.find({}).exec();
   }
   async getById(id: string): Promise<IUser> {
     const user = await this.user.findById(id).exec();

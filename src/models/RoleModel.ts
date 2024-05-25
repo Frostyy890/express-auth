@@ -14,7 +14,8 @@ export default class Role {
     else if (userRoles.includes(Roles.MANAGER))
       return this.roles.find((role) => role.name === Roles.MANAGER)
         ?.permissions;
-    else
+    else if (userRoles.includes(Roles.USER))
       return this.roles.find((role) => role.name === Roles.USER)?.permissions;
+    else return null;
   }
 }

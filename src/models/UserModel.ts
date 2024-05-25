@@ -30,6 +30,17 @@ const UserSchema = new Schema<IUser>(
   },
   {
     timestamps: true,
+    toJSON: {
+      transform: function (doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+        delete ret.refreshToken;
+        delete ret.roles;
+        delete ret.createdAt;
+        delete ret.updatedAt;
+      },
+    },
   }
 );
 

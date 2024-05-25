@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { CustomError } from "../errors/CustomError";
 import { writeToFile } from "../utils/WriteToFile";
+import { NODE_ENV } from "../constants";
 export const ErrorHandler = (
   err: Error,
   req: Request,
@@ -10,7 +11,8 @@ export const ErrorHandler = (
   // Handled errors
   if (err instanceof CustomError) {
     const { statusCode, errors, logging, stack } = err;
-    if (logging) {
+    const isLogging = NODE_ENV === "test" ? true : logging;
+    if (isLogging) {
       const formatedError = JSON.stringify(
         {
           statusCode,
