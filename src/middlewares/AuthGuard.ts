@@ -24,7 +24,7 @@ export default class AuthGuard implements IAuthGuard {
   }
   verifyRoles(allowedRoles: Roles[]) {
     return (req: IAuthRequest, res: Response, next: NextFunction): void => {
-      if (!req?.user && !req.user?.roles) throw new FORBIDDEN_ERROR();
+      if (!req?.user || !req.user?.roles) throw new FORBIDDEN_ERROR();
       const hasRole = req.user.roles.some((role) =>
         allowedRoles.includes(role)
       );
@@ -37,7 +37,7 @@ export default class AuthGuard implements IAuthGuard {
   }
   verifyPermissions(permission: Permissions) {
     return (req: IAuthRequest, res: Response, next: NextFunction): void => {
-      if (!req?.user && !req.user?.roles) throw new FORBIDDEN_ERROR();
+      if (!req?.user || !req.user?.roles) throw new FORBIDDEN_ERROR();
       const userPermissions = new Role().getPermissionsByRole(req.user.roles);
       if (!userPermissions || !userPermissions.includes(permission))
         throw new FORBIDDEN_ERROR({
