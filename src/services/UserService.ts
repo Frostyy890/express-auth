@@ -8,20 +8,23 @@ import {
 import { IUserService, UserData, UserUpdateData } from "../interfaces";
 import { hash, compare } from "bcrypt";
 import { Roles } from "../config/roles";
+import { UserRepository } from "../repositories";
+
+const SALT_ROUNDS = 10;
 
 export default class UserService implements IUserService {
-  constructor(private readonly user: Model<IUser>) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async getAll(): Promise<IUser[]> {
-    return this.user.find({}).exec();
+    return this.userRepository.getAll();
   }
   async getById(id: string): Promise<IUser> {
-    const user = await this.user.findById(id).exec();
+    const user = await this.userRepository.getById(id);
     if (!user) throw new NOT_FOUND_ERROR({ message: "User not found" });
     return user;
   }
   async getByAttribute(attribute: keyof IUser, value: string): Promise<IUser> {
-    const user = await this.user.findOne({ [attribute]: value }).exec();
+    const user = await this.userRepository.getByAttribute(attribute, value);
     if (!user)
       throw new NOT_FOUND_ERROR({
         message: `User with ${attribute} ${value} doesn't exist`,
@@ -30,43 +33,29 @@ export default class UserService implements IUserService {
   }
   async create(userData: UserData): Promise<IUser> {
     const { email, password, roles } = userData;
-    const defaultRole = Roles.USER;
-    const userInDb = await this.user.findOne({ email }).exec();
-    if (userInDb)
-      throw new CONFLICT_ERROR({
-        message: `User with email ${email} already exists`,
-      });
-    const hashedPassword = await hash(password, 10);
-    const userRoles = roles ?? [defaultRole];
+    await this.ensureEmailIsUnique(email);
+    const hashedPassword = await hash(password, SALT_ROUNDS);
+    const userRoles = roles ?? [Roles.USER];
     const newUser = { email, roles: userRoles, password: hashedPassword };
-    return await this.user.create(newUser);
+    return await this.userRepository.create(newUser);
   }
-  async update(id: string, updateData: UserUpdateData): Promise<IUser | null> {
+  async update(id: string, updateData: UserUpdateData): Promise<IUser> {
     const { email, password } = updateData;
-    const user = await this.getById(id);
-    if (email) {
-      const userWithSameEmail = await this.getByAttribute("email", email);
-      if (userWithSameEmail && userWithSameEmail._id.toString() !== id)
-        throw new CONFLICT_ERROR({
-          message: `User with email ${email} already exists`,
-        });
-    }
-    if (password) {
-      const isMatch = await compare(password, user.password);
-      if (isMatch)
-        throw new BAD_REQUEST_ERROR({
-          message: "New password can't be the same as old one",
-        });
-      const newHashedPassword = await hash(password, 10);
-      updateData.password = newHashedPassword;
-    }
-    const updatedUser = await this.user
-      .findByIdAndUpdate(id, updateData, { new: true })
-      .exec();
+    if (email) await this.ensureEmailIsUnique(email, id);
+    if (password) updateData.password = await hash(password, SALT_ROUNDS);
+    const updatedUser = await this.userRepository.update(id, updateData);
+    if (!updatedUser) throw new NOT_FOUND_ERROR({ message: "User not found" });
     return updatedUser;
   }
   async delete(id: string): Promise<void> {
     await this.getById(id);
-    await this.user.deleteOne({ id }).exec();
+    await this.userRepository.delete(id);
+  }
+  private async ensureEmailIsUnique(email: string, id?: string): Promise<void> {
+    const isUnique = await this.userRepository.isEmailUnique(email, id);
+    if (!isUnique)
+      throw new CONFLICT_ERROR({
+        message: `User with email ${email} already exists`,
+      });
   }
 }

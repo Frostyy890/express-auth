@@ -5,8 +5,10 @@ import { UserController } from "../controllers";
 import { user_validation_constraints } from "../validations";
 import { AuthGuard, ValidateRequest } from "../middlewares";
 import { Permissions } from "../config/roles";
+import { UserRepository } from "../repositories";
 
-const userService = new UserService(User);
+const userRepository = new UserRepository(User);
+const userService = new UserService(userRepository);
 const controller = new UserController(userService);
 const authGuard = new AuthGuard();
 

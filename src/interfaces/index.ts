@@ -9,12 +9,14 @@ import IAuthController from "./IAuthController";
 import { IAuthService, IAuthTokens } from "./IAuthService";
 import { IAuthGuard, IAuthRequest, ITokenPayload } from "./IAuthGuard";
 import IAuthFacade from "./IAuthFacade";
+import IUserRepository from "./IUserRepository";
 
 export {
-  UserData,
+  IUserRepository,
   IUserController,
   IUserService,
   UserCredentials,
+  UserData,
   UserUpdateData,
   IAuthController,
   IAuthService,

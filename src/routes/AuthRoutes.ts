@@ -5,9 +5,11 @@ import { AuthController } from "../controllers";
 import { ValidateRequest } from "../middlewares";
 import { auth_validation_constraints } from "../validations";
 import { AuthFacade } from "../facades";
+import { UserRepository } from "../repositories";
 
 const authService = new AuthService();
-const userService = new UserService(User);
+const userRepository = new UserRepository(User);
+const userService = new UserService(userRepository);
 const facade = new AuthFacade(authService, userService);
 const controller = new AuthController(facade);
 

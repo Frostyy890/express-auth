@@ -18,6 +18,6 @@ export interface IUserService {
   getById(id: string): Promise<IUser>;
   getByAttribute(attribute: keyof IUser, value: string): Promise<IUser>;
   create(userData: UserData): Promise<IUser>;
-  update(id: string, updateData: UserUpdateData): Promise<IUser | null>;
+  update(id: string, updateData: UserUpdateData): Promise<IUser>;
   delete(id: string): Promise<void>;
 }

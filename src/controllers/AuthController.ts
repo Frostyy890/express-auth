@@ -12,24 +12,24 @@ const REFRESH_TOKEN_COOKIE_OPTIONS: CookieOptions = {
 export default class AuthController implements IAuthController {
   constructor(private readonly authFacade: AuthFacade) {}
   async login(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const { accessToken, refreshToken } = await this.authFacade.login(req.body);
+    const { tokens, user } = await this.authFacade.login(req.body);
+    const { accessToken, refreshToken } = tokens;
     res
       .status(200)
       .cookie("jwt", refreshToken, REFRESH_TOKEN_COOKIE_OPTIONS)
-      .json({ accessToken });
+      .json({ accessToken, user });
   }
   async register(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<void> {
-    const { accessToken, refreshToken } = await this.authFacade.register(
-      req.body
-    );
+    const { tokens, user } = await this.authFacade.register(req.body);
+    const { accessToken, refreshToken } = tokens;
     res
       .status(200)
       .cookie("jwt", refreshToken, REFRESH_TOKEN_COOKIE_OPTIONS)
-      .json({ accessToken });
+      .json({ accessToken, user });
   }
   async refresh(
     req: Request,
