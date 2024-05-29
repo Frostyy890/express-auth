@@ -10,7 +10,7 @@ export const Logger = (
   const start = Date.now();
   res.on("finish", () => {
     const duration = Date.now() - start;
-    const message = `[${new Date().toISOString()}] ${req.method} ${
+    const message = `[${new Date().toISOString()}]: ${req.method} ${
       req.originalUrl
     } ${res.statusCode} ${duration}ms - ${req.ip} - ${
       req.headers["user-agent"]
