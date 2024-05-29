@@ -1,12 +1,7 @@
-import { Model } from "mongoose";
 import { IUser } from "../models";
-import {
-  BAD_REQUEST_ERROR,
-  CONFLICT_ERROR,
-  NOT_FOUND_ERROR,
-} from "../errors/common";
+import { CONFLICT_ERROR, NOT_FOUND_ERROR } from "../errors/common";
 import { IUserService, UserData, UserUpdateData } from "../interfaces";
-import { hash, compare } from "bcrypt";
+import { hash } from "bcrypt";
 import { Roles } from "../config/roles";
 import { UserRepository } from "../repositories";
 

@@ -1,4 +1,4 @@
-import { body, cookie, param } from "express-validator";
+import { body, cookie } from "express-validator";
 
 export const auth_validation_constraints = {
   login: [

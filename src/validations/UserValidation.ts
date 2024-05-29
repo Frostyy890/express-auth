@@ -1,4 +1,4 @@
-import { body, cookie, param } from "express-validator";
+import { body, param } from "express-validator";
 import { Roles } from "../config/roles";
 
 export const user_validation_constraints = {

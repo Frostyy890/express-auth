@@ -1,13 +1,13 @@
 import express from "express";
-import { PORT, CONNECTION_STRING } from "./src/constants";
+import { PORT, CONNECTION_STRING } from "./constants";
 import cors from "cors";
-import { CORS_OPTIONS } from "./src/config/cors";
+import { CORS_OPTIONS } from "./config/cors";
 import cookieParser from "cookie-parser";
 import "express-async-errors";
-import { connectDB } from "./src/config/db";
-import { AppRouter } from "./src/routes/AppRoutes";
-import { ErrorHandler, Logger } from "./src/middlewares";
-import { NOT_FOUND_ERROR } from "./src/errors/common";
+import { connectDB } from "./config/db";
+import { AppRouter } from "./routes/AppRoutes";
+import { ErrorHandler, Logger } from "./middlewares";
+import { NOT_FOUND_ERROR } from "./errors/common";
 
 const app = express();
 app.use(cors(CORS_OPTIONS));
