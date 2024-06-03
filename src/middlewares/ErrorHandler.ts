@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { CustomError } from "../errors/CustomError";
 import { writeToFile } from "../utils/WriteToFile";
-import { NODE_ENV } from "../constants";
+import { NODE_ENV } from "../config/configuration";
 export const ErrorHandler = (
   err: Error,
   req: Request,

@@ -4,7 +4,7 @@ import { generateAuthTokens } from "../utils/GenerateAuthTokens";
 import { ITokenPayload, IAuthService, IAuthTokens } from "../interfaces";
 import { JwtPayload, verify } from "jsonwebtoken";
 import { compare } from "bcrypt";
-import { REFRESH_TOKEN_SECRET } from "../constants";
+import { REFRESH_TOKEN_SECRET } from "../config/configuration";
 
 export default class AuthService implements IAuthService {
   constructor() {}

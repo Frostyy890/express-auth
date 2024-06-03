@@ -1,7 +1,7 @@
 import { Response, NextFunction } from "express";
 import { FORBIDDEN_ERROR, UNAUTHORIZED_ERROR } from "../errors/common";
 import { JwtPayload, verify } from "jsonwebtoken";
-import { ACCESS_TOKEN_SECRET } from "../constants";
+import { ACCESS_TOKEN_SECRET } from "../config/configuration";
 import { IAuthGuard, IAuthRequest } from "../interfaces";
 import { Roles, Permissions } from "../config/roles";
 import { Role } from "../models";

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { NODE_ENV } from "../constants";
+import { NODE_ENV } from "../config/configuration";
 import { writeToFile } from "../utils/WriteToFile";
 
 export const Logger = (

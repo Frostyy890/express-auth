@@ -1,9 +1,9 @@
 import express from "express";
-import { PORT, CONNECTION_STRING } from "./constants";
-import cors from "cors";
-import { CORS_OPTIONS } from "./config/cors";
-import cookieParser from "cookie-parser";
 import "express-async-errors";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import { PORT } from "./config/configuration";
+import { CORS_OPTIONS } from "./config/cors";
 import { connectDB } from "./config/db";
 import { AppRouter } from "./routes/AppRoutes";
 import { ErrorHandler, Logger } from "./middlewares";
@@ -30,7 +30,7 @@ app.use(ErrorHandler);
 //INITIALIZE APP
 const initializeApp = async () => {
   try {
-    await connectDB(CONNECTION_STRING);
+    await connectDB();
     app.listen(PORT || 3002, () => {
       console.log(`[server]: server is running on port ${PORT}`);
     });

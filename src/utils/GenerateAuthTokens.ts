@@ -1,5 +1,8 @@
 import { sign } from "jsonwebtoken";
-import { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } from "../constants";
+import {
+  ACCESS_TOKEN_SECRET,
+  REFRESH_TOKEN_SECRET,
+} from "../config/configuration";
 import { IAuthTokens } from "../interfaces";
 
 export const generateAuthTokens = (payload: object): IAuthTokens => {
