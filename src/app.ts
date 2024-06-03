@@ -32,7 +32,7 @@ const initializeApp = async () => {
   try {
     await connectDB();
     app.listen(PORT || 3002, () => {
-      console.log(`[server]: server is running on port ${PORT}`);
+      console.log(`[server]: server is running at http://localhost:${PORT}`);
     });
   } catch (err) {
     console.error(err);

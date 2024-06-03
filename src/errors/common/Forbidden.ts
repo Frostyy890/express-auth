@@ -1,7 +1,8 @@
 import { CustomError } from "../CustomError";
+import { HttpStatus } from "./status_codes";
 
 export default class FORBIDDEN_ERROR extends CustomError {
-  private static readonly _statusCode = 403;
+  private static readonly _statusCode = HttpStatus.FORBIDDEN;
   private readonly _code: number;
   private readonly _logging: boolean;
   private readonly _context: { [key: string]: any };

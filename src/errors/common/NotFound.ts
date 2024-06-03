@@ -1,7 +1,8 @@
 import { CustomError } from "../CustomError";
+import { HttpStatus } from "./status_codes";
 
 export default class NOT_FOUND_ERROR extends CustomError {
-  private static readonly _statusCode = 404;
+  private static readonly _statusCode = HttpStatus.NOT_FOUND;
   private readonly _code: number;
   private readonly _logging: boolean;
   private readonly _context: { [key: string]: any };

@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { CustomError } from "../errors/CustomError";
 import { writeToFile } from "../utils/WriteToFile";
 import { NODE_ENV } from "../config/configuration";
+import { HttpStatus } from "../errors/common";
 export const ErrorHandler = (
   err: Error,
   req: Request,
@@ -31,6 +32,6 @@ export const ErrorHandler = (
   // Unhandled errors
   console.error(JSON.stringify(`Unhandled error: ${err}`, null, 2));
   return res
-    .status(500)
+    .status(HttpStatus.INTERNAL_SERVER_ERROR)
     .send({ errors: [{ message: "Something went wrong" }] });
 };

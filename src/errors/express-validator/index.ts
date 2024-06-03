@@ -1,8 +1,9 @@
 import { CustomError } from "../CustomError";
 import { ValidationError } from "express-validator";
+import { HttpStatus } from "../common/status_codes";
 
 export default class REQUEST_VALIDATION_ERROR extends CustomError {
-  private static readonly _statusCode = 400;
+  private static readonly _statusCode = HttpStatus.BAD_REQUEST;
   private readonly _code: number;
   private readonly _logging: boolean;
   private readonly _validationErrors: ValidationError[];

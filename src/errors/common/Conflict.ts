@@ -1,7 +1,8 @@
 import { CustomError } from "../CustomError";
+import { HttpStatus } from "./status_codes";
 
 export default class CONFLICT_ERROR extends CustomError {
-  private static readonly _statusCode = 409;
+  private static readonly _statusCode = HttpStatus.CONFLICT;
   private readonly _code: number;
   private readonly _logging: boolean;
   private readonly _context: { [key: string]: any };

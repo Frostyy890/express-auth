@@ -4,7 +4,7 @@ import REQUEST_VALIDATION_ERROR from "../errors/express-validator";
 
 export const ValidateRequest = (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction
 ) => {
   const errors = validationResult(req);
